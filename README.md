@@ -23,9 +23,12 @@ required.
 
 ## Portfolio content
 
-- Security operations, blue-team experience, and technical skills
+- AI and automation focus with a cybersecurity foundation
+- Chronological education, work, community, and competition timeline
+- Cisco, Internshala, Weltec, and Google credentials
 - Car Reliability Analyzer live demo
 - Hojaiga.com AI automation project in development
-- Résumé PDF and contact links
+- Résumé and credential documents, plus contact links
 
-The résumé PDF in `public/` is provided for the portfolio owner.
+The résumé PDF and credential files in `public/` are provided by the portfolio
+owner.

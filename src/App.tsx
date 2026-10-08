@@ -55,25 +55,115 @@ const skills = [
 
 const experience = [
   {
+    kind: "education",
+    role: "B.S. Computer Science — Cybersecurity",
+    organization: "University of Tennessee at Chattanooga",
+    dates: "Aug 2022 — Dec 2025",
+    description:
+      "Completed a Bachelor of Computer Science with a cybersecurity concentration. GPA: 3.52 / 4.0.",
+  },
+  {
+    kind: "experience",
+    role: "Membership Service Assistant",
+    organization: "Ignite, University of Tennessee at Chattanooga",
+    dates: "Oct 2022 — Jan 2024",
+    description:
+      "Supported members at the front desk and main office, answered questions in person and by phone, handled facility access, and assisted with memberships and equipment rentals.",
+  },
+  {
+    kind: "experience",
     role: "Lead Makerspace Manager",
     organization: "Hatch It! Lab, University of Tennessee at Chattanooga",
     dates: "Jan 2023 — Dec 2025",
     description:
-      "Led day-to-day makerspace operations, trained more than 500 students and staff, and helped maintain clear operating and safety standards.",
+      "Led makerspace operations and student workers across five equipment areas. Trained 500+ students, faculty, and staff, supported lab users, and maintained equipment and safety standards.",
   },
   {
+    kind: "community",
+    role: "Advisory Committee Member",
+    organization: "Ignite, University of Tennessee at Chattanooga",
+    dates: "Feb 2023 — Aug 2023",
+    description:
+      "Contributed member feedback and ideas to improve the facility, programs, services, and member experience.",
+  },
+  {
+    kind: "experience",
+    role: "Recreation Supervisor · Promoted",
+    organization: "Ignite, University of Tennessee at Chattanooga",
+    dates: "Feb 2023 — Jan 2024",
+    description:
+      "Led facility operations and equipment upkeep, conducted tours for 500+ visitors, and handled membership sales exceeding $500.",
+  },
+  {
+    kind: "experience",
     role: "Project Management Intern",
     organization: "Swaroop AI",
     dates: "Apr 2024 — Jun 2024",
     description:
-      "Coordinated AI/ML, data science, DevOps, and media teams; tracked project timelines, resources, and deliverables.",
+      "Coordinated AI/ML, data science, DevOps, project management, and media teams, acting as a central communication point and tracking timelines, resources, and deliverables.",
   },
   {
+    kind: "competition",
     role: "SECCDC Blue Team",
-    organization: "Collegiate Cyber Defense Competition",
-    dates: "Competition",
+    organization: "2025 Southeast Collegiate Cyber Defense Competition",
+    dates: "Feb 2025",
     description:
-      "Worked in a six-person blue team defending industrial networks against active red-team activity in a 38-team competition.",
+      "Worked on a six-person blue team to keep critical services running during active attacks in a field of 38 competing teams.",
+  },
+  {
+    kind: "education",
+    role: "Data Science studies",
+    organization: "Weltec Institute of Technology",
+    dates: "May 2026",
+    description:
+      "Data Science education listed on my profile and résumé.",
+  },
+];
+
+const credentials = [
+  {
+    kind: "cisco",
+    title: "Introduction to Cybersecurity",
+    issuer: "Cisco Networking Academy",
+    detail: "Verified digital badge",
+    image: "/credentials/cisco-introduction-to-cybersecurity.png",
+    imageAlt: "Cisco Networking Academy Verified Introduction to Cybersecurity badge",
+    mark: null,
+    href: "/credentials/cisco-introduction-to-cybersecurity.png",
+    linkLabel: "View badge",
+  },
+  {
+    kind: "internshala",
+    title: "Cyber Security with AI",
+    issuer: "Internshala Trainings",
+    detail: "8-week training · 92% · Top performer · Jun 20, 2026",
+    image: null,
+    imageAlt: "",
+    mark: "IST",
+    href: "/credentials/internshala-cyber-security-with-ai-certificate.pdf",
+    linkLabel: "View certificate",
+  },
+  {
+    kind: "weltec",
+    title: "Data Science",
+    issuer: "Weltec Institute of Technology",
+    detail: "Education entry · May 2026",
+    image: null,
+    imageAlt: "",
+    mark: "W",
+    href: "/credentials/weltec-internshala-linkedin-badges.png",
+    linkLabel: "View profile badge",
+  },
+  {
+    kind: "google",
+    title: "Connect and Protect: Networks and Network Security",
+    issuer: "Google · Coursera",
+    detail: "Completed Jul 31, 2025",
+    image: null,
+    imageAlt: "",
+    mark: null,
+    href: "/credentials/google-network-security-certificate.pdf",
+    linkLabel: "View certificate",
   },
 ];
 
@@ -93,8 +183,9 @@ function App() {
           <nav className="main-nav" aria-label="Main navigation">
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
-            <a href="#experience">Experience</a>
+            <a href="#experience">Journey</a>
             <a href="#work">Work</a>
+            <a href="#credentials">Badges</a>
           </nav>
           <a className="header-contact" href="#contact">
             Contact <span aria-hidden="true">↗</span>
@@ -287,22 +378,31 @@ function App() {
         </section>
 
         <section className="content-section experience-section" id="experience">
-          <div className="page-shell section-grid">
-            <div className="section-heading">
-              <p className="eyebrow">03 / EXPERIENCE</p>
-              <h2>Learning by doing, working with people.</h2>
+          <div className="page-shell">
+            <div className="section-title-row journey-heading">
+              <div>
+                <p className="eyebrow">03 / MY JOURNEY</p>
+                <h2>Work, study, and learning along the way.</h2>
+              </div>
+              <p className="section-aside">
+                An experience timeline across education, work, community, and
+                hands-on learning.
+              </p>
             </div>
-            <div className="experience-list">
+            <div className="timeline-list">
               {experience.map((item, index) => (
-                <article className="experience-item" key={item.role}>
-                  <span className="experience-number">0{index + 1}</span>
-                  <div>
-                    <div className="experience-title-row">
-                      <h3>{item.role}</h3>
-                      <span>{item.dates}</span>
+                <article className={`timeline-item timeline-item--${item.kind}`} key={`${item.role}-${item.dates}`}>
+                  <div className="timeline-marker" aria-hidden="true">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <div className="timeline-card">
+                    <div className="timeline-card-top">
+                      <span className="timeline-kind">{item.kind}</span>
+                      <time>{item.dates}</time>
                     </div>
-                    <p className="experience-org">{item.organization}</p>
-                    <p className="experience-description">{item.description}</p>
+                    <h3>{item.role}</h3>
+                    <p className="timeline-organization">{item.organization}</p>
+                    <p className="timeline-description">{item.description}</p>
                   </div>
                 </article>
               ))}
@@ -395,15 +495,43 @@ function App() {
           </div>
         </section>
 
-        <section className="credentials-section">
-          <div className="page-shell credentials-layout">
-            <div>
-              <p className="eyebrow">05 / CREDENTIALS</p>
-              <h2>Always learning.<br />Always improving.</h2>
+        <section className="credentials-section" id="credentials">
+          <div className="page-shell">
+            <div className="credentials-heading">
+              <div>
+                <p className="eyebrow">05 / BADGES &amp; CERTIFICATES</p>
+                <h2>Proof of learning, collected along the way.</h2>
+              </div>
+              <img
+                className="provider-badges-reference"
+                src="/credentials/weltec-internshala-linkedin-badges.png"
+                alt="Weltec Institute and Internshala Trainings badges displayed on LinkedIn"
+              />
             </div>
-            <div className="credential-list">
-              <article><span>01</span><div><h3>Google Cybersecurity Certificate</h3><p>Google</p></div><span className="credential-status">COMPLETED</span></article>
-              <article><span>02</span><div><h3>Cybersecurity Certificate</h3><p>Internshala</p></div><span className="credential-status">COMPLETED</span></article>
+            <div className="credential-grid">
+              {credentials.map((credential) => (
+                <article className={`credential-card credential-card--${credential.kind}`} key={credential.kind}>
+                  {credential.image ? (
+                    <div className="credential-badge-image">
+                      <img src={credential.image} alt={credential.imageAlt} />
+                    </div>
+                  ) : credential.mark ? (
+                    <div className={`credential-provider-mark credential-provider-mark--${credential.kind}`}>
+                      {credential.mark}
+                    </div>
+                  ) : (
+                    <div className="credential-google-mark" aria-hidden="true">G</div>
+                  )}
+                  <div className="credential-card-copy">
+                    <span className="credential-kind">{credential.issuer}</span>
+                    <h3>{credential.title}</h3>
+                    <p>{credential.detail}</p>
+                    <a href={credential.href} target="_blank" rel="noreferrer">
+                      {credential.linkLabel} <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
