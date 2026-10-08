@@ -1,7 +1,8 @@
 # Dhruv Patel — Portfolio
 
-An original, responsive portfolio for my work and interests in cybersecurity,
-systems, and automation. Built with React, TypeScript, Vite, and CSS.
+An original, responsive portfolio introducing my interests in AI and
+automation, with cybersecurity as a supporting foundation. Built with React,
+TypeScript, Vite, and CSS.
 
 ## Run locally
 

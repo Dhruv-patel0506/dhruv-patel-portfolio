@@ -1,17 +1,51 @@
+import { useState } from "react";
 import "./App.css";
+
+const storyTabs = [
+  {
+    id: "builder",
+    label: "The builder",
+    number: "01",
+    kicker: "MY STORY",
+    title: "Welcome to my story.",
+    copy: "I'm Dhruv Patel — an AI and automation enthusiast who likes turning ideas into useful, working tools.",
+    tags: ["AI enthusiast", "Automation builder", "Curious by default"],
+    status: "NOW / EXPLORING WHAT'S POSSIBLE",
+  },
+  {
+    id: "automation",
+    label: "In progress",
+    number: "02",
+    kicker: "ON THE WORKBENCH",
+    title: "Making the repetitive feel effortless.",
+    copy: "Hojaiga.com is my AI-powered automation project in development: an ongoing experiment in making everyday digital workflows smarter.",
+    tags: ["Hojaiga.com", "AI-powered", "Under development"],
+    status: "BUILD / HOJAIGA.COM",
+  },
+  {
+    id: "security",
+    label: "Security roots",
+    number: "03",
+    kicker: "A FOUNDATION I BUILD ON",
+    title: "Thoughtful tech earns trust.",
+    copy: "My cybersecurity education adds a security-minded perspective to the systems I explore: understand the risks, protect the people, and build responsibly.",
+    tags: ["B.S. Cybersecurity", "SECCDC blue team", "Responsible systems"],
+    status: "FOUNDATION / COMPUTER SCIENCE",
+  },
+] as const;
 
 const skills = [
   {
-    title: "Security operations",
-    items: ["Incident response", "Security log analysis", "SOC workflows", "Threat research"],
+    title: "AI & automation",
+    items: ["AI-powered workflows", "Workflow automation", "Python scripting", "API integration"],
   },
   {
-    title: "Network & systems",
-    items: ["Linux", "System hardening", "Firewall fundamentals", "IDS/IPS concepts"],
+    title: "Product & software",
+    items: ["Turning ideas into tools", "Backend APIs", "Data processing", "Project coordination"],
   },
   {
-    title: "Tools & development",
-    items: ["Python", "SIEM tools", "API integration", "Data processing"],
+    title: "Cybersecurity foundation",
+    items: ["Blue-team operations", "Incident response", "Security log analysis", "System hardening"],
   },
   {
     title: "Ways of working",
@@ -44,6 +78,10 @@ const experience = [
 ];
 
 function App() {
+  const [activeStory, setActiveStory] = useState<(typeof storyTabs)[number]["id"]>("builder");
+  const [storyWindowOpen, setStoryWindowOpen] = useState(true);
+  const selectedStory = storyTabs.find((tab) => tab.id === activeStory) ?? storyTabs[0];
+
   return (
     <>
       <header className="site-header">
@@ -68,16 +106,16 @@ function App() {
         <section className="hero-section" id="home">
           <div className="page-shell hero-layout">
             <div className="hero-copy">
-              <p className="eyebrow"><span className="status-dot" /> Cybersecurity · Systems · Automation</p>
+              <p className="eyebrow"><span className="status-dot" /> AI · AUTOMATION · IDEAS INTO ACTION</p>
               <h1>
-                Curious by nature.
+                Building a little
                 <br />
-                <span>Focused on defense.</span>
+                <span>more possibility.</span>
               </h1>
               <p className="hero-intro">
-                I&apos;m Dhruv Patel, a cybersecurity graduate interested in
-                security operations, resilient systems, and practical
-                automation.
+                I&apos;m Dhruv Patel — an AI and automation enthusiast turning
+                curious ideas into useful experiences. Cybersecurity is the
+                thoughtful foundation behind how I build.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#work">
@@ -93,33 +131,103 @@ function App() {
               </div>
             </div>
 
-            <aside className="profile-panel" aria-label="Professional focus">
-              <div className="panel-topline">
-                <span>PROFILE / 01</span>
-                <span className="panel-indicator">OPEN TO OPPORTUNITY</span>
+            <div className="hero-stage" aria-label="Dhruv Patel on stage, welcoming visitors to his portfolio">
+              <div className="stage-curtain stage-curtain-left" />
+              <div className="stage-curtain stage-curtain-right" />
+              <div className="stage-light stage-light-left" />
+              <div className="stage-light stage-light-right" />
+              <div className="stage-beam" />
+              <div className="stage-audience" aria-hidden="true">
+                <i /><i /><i /><i /><i /><i /><i /><i /><i />
               </div>
-              <div className="panel-monogram" aria-hidden="true">DP</div>
-              <p className="panel-name">Dhruv Patel</p>
-              <p className="panel-role">Cybersecurity · Blue Team</p>
-              <div className="panel-rule" />
-              <div className="panel-detail">
-                <span>EDUCATION</span>
-                <strong>B.S. Computer Science</strong>
-                <span>Cybersecurity · UTC</span>
+              <div className="stage-floor" />
+              <div className="stage-person" aria-label="Stylized illustration of Dhruv Patel">
+                <div className="stage-person-head"><span>DP</span></div>
+                <div className="stage-person-neck" />
+                <div className="stage-person-body" />
+                <div className="stage-person-arm stage-person-arm-left" />
+                <div className="stage-person-arm stage-person-arm-right" />
+                <div className="stage-person-leg stage-person-leg-left" />
+                <div className="stage-person-leg stage-person-leg-right" />
               </div>
-              <div className="panel-detail">
-                <span>INTERESTS</span>
-                <strong>Detection / Response</strong>
-                <span>Security automation</span>
+              <div className="stage-mic" aria-hidden="true">
+                <span className="mic-head" />
+                <span className="mic-stand" />
+                <span className="mic-base" />
               </div>
-              <div className="panel-footer">
-                <span>VADODARA, INDIA</span>
-                <span>01 — 04</span>
+              <div className="stage-intro">
+                <span>ACT I · THE BEGINNING</span>
+                <strong>Welcome to my story.</strong>
+                <small>AI · AUTOMATION · A LITTLE CYBERSECURITY</small>
               </div>
-            </aside>
+              {storyWindowOpen ? (
+                <aside className="story-window" aria-label="Interactive introduction">
+                  <div className="story-window-bar">
+                    <div className="window-controls" aria-hidden="true"><i /><i /><i /></div>
+                    <span>dhruv / my-story.exe</span>
+                    <button
+                      type="button"
+                      aria-label="Minimize story panel"
+                      onClick={() => setStoryWindowOpen(false)}
+                    >
+                      −
+                    </button>
+                  </div>
+                  <div className="story-tabs" role="tablist" aria-label="Explore my story">
+                    {storyTabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={activeStory === tab.id}
+                        aria-controls="story-tab-panel"
+                        id={`story-tab-${tab.id}`}
+                        onClick={() => setActiveStory(tab.id)}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div
+                    className="story-panel"
+                    id="story-tab-panel"
+                    role="tabpanel"
+                    aria-labelledby={`story-tab-${selectedStory.id}`}
+                    key={selectedStory.id}
+                  >
+                    <div className="story-kicker">
+                      <span>{selectedStory.kicker}</span><span>{selectedStory.number} / 03</span>
+                    </div>
+                    <h2>{selectedStory.title}</h2>
+                    <p>{selectedStory.copy}</p>
+                    <div className="story-tags">
+                      {selectedStory.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                    </div>
+                    <div className="story-status"><span />{selectedStory.status}</div>
+                  </div>
+                  <div className="story-window-footer">
+                    <span>INTERACTIVE INTRODUCTION</span>
+                    <span>SELECT A CHAPTER</span>
+                  </div>
+                </aside>
+              ) : (
+                <button
+                  className="story-restore"
+                  type="button"
+                  onClick={() => setStoryWindowOpen(true)}
+                >
+                  <span aria-hidden="true">▣</span> Open my story
+                </button>
+              )}
+              <div className="stage-project-note">
+                <span className="project-note-spark">✳</span>
+                <span><strong>On the workbench</strong><small>Hojaiga.com · AI automation</small></span>
+                <span className="project-note-arrow" aria-hidden="true">↗</span>
+              </div>
+            </div>
           </div>
           <div className="hero-bottom page-shell">
-            <span>Building a safer digital world, one system at a time.</span>
+            <span>Ideas into action. Thoughtful tech, built for people.</span>
             <a href="#about">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
           </div>
         </section>
@@ -128,20 +236,20 @@ function App() {
           <div className="page-shell section-grid">
             <div className="section-heading">
               <p className="eyebrow">01 / A LITTLE ABOUT ME</p>
-              <h2>Security is a practice of paying attention.</h2>
+              <h2>Curiosity is where the next useful thing begins.</h2>
             </div>
             <div className="section-copy">
               <p>
-                I&apos;m a Computer Science graduate with a cybersecurity focus
-                and hands-on experience in team-based defense, project
-                coordination, and technical operations. I enjoy understanding
-                how systems work, spotting what feels out of place, and
-                communicating clearly when it matters.
+                I&apos;m a Computer Science graduate excited by AI, automation,
+                and the process of turning a promising idea into something
+                people can use. I like exploring how tools fit together,
+                simplifying repetitive work, and learning by building.
               </p>
               <p>
-                My experience ranges from defending services during a
-                collegiate cyber defense competition to helping teams deliver
-                projects and supporting a busy university makerspace.
+                I&apos;m currently developing Hojaiga.com, an AI-powered
+                automation project. My cybersecurity background brings a
+                second lens to that work: build with care, think about trust,
+                and understand the systems underneath.
               </p>
               <div className="fact-row">
                 <div><strong>3.52</strong><span>GPA / 4.0</span></div>
@@ -160,8 +268,8 @@ function App() {
                 <h2>Skills I bring to the table</h2>
               </div>
               <p className="section-aside">
-                A practical foundation across security, systems, and
-                collaboration.
+                AI and automation lead the way; software skills and security
+                awareness make the foundation.
               </p>
             </div>
             <div className="skills-grid">
@@ -308,8 +416,8 @@ function App() {
             </div>
             <div className="contact-details">
               <p>
-                Interested in cybersecurity, security operations, or
-                automation? I&apos;d be glad to connect.
+                Interested in practical AI, automation, or thoughtful
+                technology? I&apos;d be glad to connect.
               </p>
               <a className="contact-email" href="mailto:dhruv15.dapatel@gmail.com">
                 dhruv15.dapatel@gmail.com <span aria-hidden="true">↗</span>
@@ -328,7 +436,7 @@ function App() {
           <a className="wordmark footer-wordmark" href="#home">
             <span className="wordmark-mark">DP</span><span>Dhruv Patel</span>
           </a>
-          <span>Cybersecurity · Systems · Automation</span>
+          <span>AI · Automation · Security-minded building</span>
           <span>© 2026 Dhruv Patel</span>
         </div>
       </footer>
