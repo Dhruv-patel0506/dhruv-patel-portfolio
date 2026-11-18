@@ -540,3 +540,228 @@ body.report-open {
     padding: 10px;
   }
 }
+
+/* =================== whiteboard (how I build) =================== */
+.built {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 0 10px 10px 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.skill-legend {
+  max-width: 680px;
+  margin-top: 14px;
+}
+
+.skill--hands {
+  border-color: rgba(30, 90, 140, 0.35);
+}
+
+.skill--concept {
+  border-style: dashed;
+}
+
+.wb-lede {
+  max-width: 620px;
+  margin-top: 14px;
+}
+
+.board {
+  position: relative;
+  padding: 16px 16px 0;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #d9dde1, #aeb4ba 45%, #e3e6e9);
+  box-shadow: 0 30px 50px rgba(40, 28, 20, 0.25), inset 0 1px 0 #fff;
+}
+
+.board-surface {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) 120px minmax(0, 1fr);
+  gap: 18px;
+  padding: 34px 36px 40px;
+  border-radius: 6px;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 55%),
+    radial-gradient(ellipse at 80% 85%, rgba(200, 205, 210, 0.25), rgba(255, 255, 255, 0) 60%),
+    #fbfbfa;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08), inset 0 3px 10px rgba(0, 0, 0, 0.06);
+  font-family: "Caveat", var(--sans);
+  color: #1d2a3a;
+}
+
+.marker {
+  margin: 0 0 14px;
+  font-family: "Caveat", var(--sans);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.marker--blue { color: #1d4f91; }
+.marker--red { color: #b3362b; }
+
+.board-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 0 26px;
+  font-size: 24px;
+}
+
+.board-steps li::marker {
+  color: #1d4f91;
+  font-weight: 700;
+}
+
+.board-steps strong {
+  color: #1d4f91;
+}
+
+.board-steps span {
+  display: block;
+  margin-top: -2px;
+  color: #3b4654;
+  font-size: 21px;
+  line-height: 1.1;
+}
+
+.board-arrow {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  color: #3b4654;
+  font-size: 22px;
+}
+
+.board-arrow svg {
+  width: 110px;
+  fill: none;
+  stroke: #1d2a3a;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.board-ai {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 23px;
+}
+
+.board-ai li::before {
+  content: "✓ ";
+  color: #b3362b;
+  font-weight: 700;
+}
+
+.board-kit-label {
+  margin: 22px 0 8px;
+  color: #1d2a3a;
+  font-size: 26px;
+  font-weight: 700;
+  text-decoration: underline wavy rgba(29, 79, 145, 0.5);
+}
+
+.board-kit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 21px;
+}
+
+.board-kit li {
+  padding: 0 10px;
+  border: 2px solid #1d2a3a;
+  border-radius: 18px 14px 16px 12px;
+}
+
+.board-tray {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 22px;
+  margin: 0 -16px;
+  padding: 0 40px;
+  border-radius: 0 0 14px 14px;
+  background: linear-gradient(#c3c8cd, #9ea4aa);
+}
+
+.pen {
+  width: 70px;
+  height: 9px;
+  border-radius: 5px 2px 2px 5px;
+}
+
+.pen--blue { background: #1d4f91; }
+.pen--red { background: #b3362b; }
+.pen--black { background: #222; }
+
+.eraser {
+  width: 54px;
+  height: 14px;
+  margin-left: auto;
+  border-radius: 3px;
+  background: linear-gradient(#f2efe9 50%, #4a4a4a 50%);
+}
+
+.stickies {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.sticky {
+  padding: 20px 22px 24px;
+  box-shadow: 0 14px 22px rgba(40, 28, 20, 0.18);
+  color: #2a241f;
+  transform: rotate(-1.2deg);
+}
+
+.sticky:nth-child(2) { transform: rotate(1deg) translateY(6px); }
+.sticky:nth-child(3) { transform: rotate(-0.6deg); }
+
+.sticky--yellow { background: #fbe9a0; }
+.sticky--pink { background: #f7cfd0; }
+.sticky--green { background: #cfe8c8; }
+
+.sticky h4 {
+  margin: 0 0 8px;
+  font-family: "Caveat", var(--sans);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.sticky p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+body.theme-cyber .board-surface { color: #1d2a3a; }
+
+@media (max-width: 900px) {
+  .board-surface {
+    grid-template-columns: 1fr;
+    padding: 24px 20px 28px;
+  }
+
+  .board-arrow svg { width: 80px; transform: rotate(90deg); }
+  .stickies { grid-template-columns: 1fr; }
+  .marker { font-size: 34px; }
+  .board-steps { font-size: 21px; }
+  .board-steps span, .board-ai, .board-kit { font-size: 19px; }
+}
+
+.nav-links a { white-space: nowrap; }

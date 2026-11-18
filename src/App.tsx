@@ -7,9 +7,10 @@ import Loader from "./Loader";
 import PacketReveal from "./PacketReveal";
 import ReportView from "./ReportView";
 import Workflow from "./Workflow";
+import Whiteboard from "./Whiteboard";
 import { credentials, journey, links, projects, skills, stats, type Project } from "./data";
 
-const SECTIONS = ["about", "work", "workflow", "skills", "security", "journey", "contact"];
+const SECTIONS = ["about", "work", "whiteboard", "workflow", "skills", "security", "journey", "contact"];
 const FORCE_MOTION = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("motion");
 
 function usePrefersReducedMotion() {
@@ -154,6 +155,7 @@ export default function App() {
           </a>
           <nav className="nav-links" aria-label="Main navigation">
             <a href="#work">Work</a>
+            <a href="#whiteboard">How I build</a>
             <a href="#workflow">Workflow</a>
             <a href="#/report">Report</a>
             <a href="#skills">Toolkit</a>
@@ -186,9 +188,9 @@ export default function App() {
 
           <div className="hero-head">
             <p className="hero-tag">#AI · #AUTOMATION · #SECURITY · #BUILDINPUBLIC</p>
-            <p className="script script--left">AI engineer&apos;s</p>
+            <p className="script script--left">AI builder&apos;s</p>
             <h1 className="mega">
-              Portfolio<span className="sr-only">: Dhruv Patel, AI engineer</span>
+              Portfolio<span className="sr-only">: Dhruv Patel, AI builder</span>
             </h1>
             <p className="script script--right">made of data packets</p>
           </div>
@@ -201,7 +203,7 @@ export default function App() {
 
           <div className="hero-foot shell">
             <p className="hero-intro">
-              <strong>Dhruv Patel.</strong> I build AI agents, automation and full-stack products, with a
+              <strong>Dhruv Patel.</strong> I design AI agents and products and build them by directing AI, with a
               cybersecurity background that keeps them safe.
             </p>
             <div className="hero-actions">
@@ -229,9 +231,9 @@ export default function App() {
             </h2>
             <div className="about-row">
               <p>
-                Computer Science graduate (cybersecurity concentration, UTC). In 2026 I shipped three products end to
-                end: a desktop AI agent, a data science academy that runs Python in the browser, and a forecasting web
-                app on AWS.
+                Computer Science graduate (cybersecurity concentration, UTC). In 2026 I shipped three products by designing
+                them myself and directing Claude Code to write the code: a desktop AI agent, a data science academy that
+                runs Python in the browser, and a forecasting web app on AWS.
               </p>
               <ul className="stats">
                 {stats.map((s) => (
@@ -263,6 +265,7 @@ export default function App() {
                 <p className="meta">{feature.role}</p>
                 <h3>{feature.name}</h3>
                 <p className="lede">{feature.blurb}</p>
+                <p className="built">{feature.built}</p>
                 <ul className="facts">
                   {feature.facts.map((f) => (
                     <li key={f}>{f}</li>
@@ -292,6 +295,7 @@ export default function App() {
                   </p>
                   <h3>{p.name}</h3>
                   <p className="lede">{p.blurb}</p>
+                  <p className="built">{p.built}</p>
                   <div className="tags">
                     {p.tags.map((t) => (
                       <span key={t}>{t}</span>
@@ -312,6 +316,11 @@ export default function App() {
           </div>
         </PacketReveal>
 
+        {/* ---------------- WHITEBOARD (how I build with AI) ---------------- */}
+        <PacketReveal id="whiteboard" label="whiteboard" reduced={reduced} armed={!booting} onArrive={onArrive}>
+          <Whiteboard />
+        </PacketReveal>
+
         {/* ---------------- WORKFLOW (hand-drawn organ pipelines) ---------------- */}
         <PacketReveal id="workflow" label="workflow" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <Workflow reduced={reduced} />
@@ -321,10 +330,14 @@ export default function App() {
         <PacketReveal id="skills" label="toolkit" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
-              <p className="kicker">04 — toolkit</p>
+              <p className="kicker">05 — toolkit</p>
               <h2 className="display">
                 The <span className="script-inline">model weights</span>
               </h2>
+              <p className="lede skill-legend">
+                Sorted by how deep each one really goes. The first group is what I&apos;m strongest at; the last group I
+                understand and can discuss, but the code was written by AI under my direction.
+              </p>
             </div>
             <div className="skill-grid">
               {skills
@@ -348,7 +361,7 @@ export default function App() {
         <PacketReveal id="security" label="security" reduced={reduced} armed={!booting} onArrive={onArrive} className="security">
           <div className="shell sec-grid">
             <div>
-              <p className="kicker">05 — security mode</p>
+              <p className="kicker">06 — security mode</p>
               <h2 className="display">
                 Secure by <span className="script-inline">default</span>
               </h2>
@@ -387,7 +400,7 @@ export default function App() {
         <PacketReveal id="journey" label="journey" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
-              <p className="kicker">06 — journey</p>
+              <p className="kicker">07 — journey</p>
               <h2 className="display">
                 Every <span className="script-inline">hop</span> so far
               </h2>
@@ -410,7 +423,7 @@ export default function App() {
         {/* ---------------- CONTACT ---------------- */}
         <PacketReveal id="contact" label="contact" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <div className="shell contact">
-            <p className="kicker">07 — contact</p>
+            <p className="kicker">08 — contact</p>
             <h2 className="mega mega--contact">Let&apos;s talk</h2>
             <p className="script script--center">open a connection</p>
             <div className="contact-links">

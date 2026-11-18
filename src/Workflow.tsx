@@ -54,13 +54,14 @@ export default function Workflow({ reduced }: { reduced: boolean }) {
   return (
     <div className="shell wf">
       <div className="head">
-        <p className="kicker">03 — the workflow I drew</p>
+        <p className="kicker">04 — the workflow I drew</p>
         <h2 className="display">
           How the <span className="script-inline">organs</span> connect
         </h2>
         <p className="lede wf-lede">
           Before writing Hojaiga, I drew it as a body: a brain, a central nervous system, and organs wired in one
-          pipeline at a time. These are my original blueprint drawings, from the core organs.
+          pipeline at a time. Pipelines 1–8 are my original blueprint drawings; 9–20 are drawn from each organ's own
+          code in the same style, so every part you see is a real class in that organ.
         </p>
       </div>
 

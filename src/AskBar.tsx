@@ -37,7 +37,11 @@ const RULES: { keys: string[]; a: Answer }[] = [
   },
   {
     keys: ["ai", "llm", "rag", "model", "machine", "skill", "stack", "python"],
-    a: { text: "AI is his main focus: agents that operate real apps, LLM apps with retrieval, QLoRA fine-tuning and honest evaluation, on a Python, FastAPI and React stack.", href: "#skills", cta: "See the toolkit" },
+    a: { text: "His strongest skill is working with AI: directing Claude Code across many sessions, Claude Skills, MCP connectors, and designing systems like Hojaiga. He understands RAG, LLM APIs and QLoRA at the design level; the code itself was written by AI under his direction.", href: "#skills", cta: "See the toolkit" },
+  },
+  {
+    keys: ["vibe", "coding", "coded", "javascript", "engineer", "claude", "whiteboard"],
+    a: { text: "Straight answer: his three products were built with AI. He designs the system, writes the brief, runs the Claude Code sessions, and reviews and tests the result. He hand-codes basic Python and knows FastAPI and React at a basic level. The whiteboard shows the full split.", href: "#whiteboard", cta: "See the whiteboard" },
   },
   {
     keys: ["security", "cyber", "secure", "hack", "blue team", "seccdc"],
@@ -53,11 +57,11 @@ const RULES: { keys: string[]; a: Answer }[] = [
   },
   {
     keys: ["hello", "hi", "hey", "who"],
-    a: { text: "Hello! I'm the AI on Dhruv's portfolio. He's an AI engineer with a cybersecurity background. What would you like to know?" },
+    a: { text: "Hello! I'm the AI on Dhruv's portfolio. He's an AI builder with a cybersecurity background. What would you like to know?" },
   },
 ];
 
-const CHIPS = ["What did he build?", "Hojaiga report", "AI skills", "Security", "Hire him"];
+const CHIPS = ["What did he build?", "Hojaiga report", "Vibe-coded?", "AI skills", "Security", "Hire him"];
 
 type SR = { lang: string; interimResults: boolean; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null; start: () => void; stop: () => void };
 
