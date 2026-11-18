@@ -307,7 +307,7 @@ main,
 /* gallery frames on the wall */
 .frames {
   position: absolute;
-  top: 43%;
+  top: 35%;
   z-index: 1;
   display: flex;
   align-items: start;

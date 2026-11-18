@@ -5,6 +5,10 @@ export const links = {
   phone: "+919274364241",
   phoneLabel: "+91 92743 64241",
   resume: "/Dhruv-Patel-Resume.pdf",
+  hojaigaPost: "https://www.linkedin.com/feed/update/urn:li:share:7528661945844113408/",
+  // DS ConQuest social pages: fill these in and the buttons appear automatically
+  dsqInstagram: "",
+  dsqLinkedIn: "",
 };
 
 export const stats = [
@@ -65,8 +69,9 @@ export const projects: Project[] = [
     facts: ["230k+ lines of Python", "60+ modules · 29 test suites", "PowerPoint: 360 controls mapped in 5 min", "Fine-tuned 4B: 39% vs 53% base (630 held-out)"],
     tags: ["Python", "UI Automation", "QLoRA", "LLM APIs", "RAG"],
     links: [
-      { label: "View code", href: "https://github.com/Dhruv-patel0506/Hojaiga.com" },
-      { label: "Read the report", href: "https://github.com/Dhruv-patel0506/Hojaiga.com/blob/main/reports/hojaiga_closing/HOJAIGA_REPORT.pdf" },
+      { label: "Read the full report", href: "#/report" },
+      { label: "GitHub repo", href: "https://github.com/Dhruv-patel0506/Hojaiga.com" },
+      { label: "LinkedIn post", href: "https://www.linkedin.com/feed/update/urn:li:share:7528661945844113408/" },
     ],
   },
   {
@@ -80,7 +85,7 @@ export const projects: Project[] = [
     tags: ["JavaScript", "Pyodide", "Django", "Redis"],
     links: [
       { label: "Visit live site", href: "https://ds-quest-silk.vercel.app/" },
-      { label: "Showcase code", href: "https://github.com/Dhruv-patel0506/DS-Quest-TOUR" },
+      { label: "GitHub repo (showcase)", href: "https://github.com/Dhruv-patel0506/DS-Quest-TOUR" },
     ],
   },
   {
@@ -94,7 +99,7 @@ export const projects: Project[] = [
     tags: ["FastAPI", "React", "AWS EC2", "Docker"],
     links: [
       { label: "Visit live site", href: "https://crestfall-frontend.vercel.app/" },
-      { label: "View code", href: "https://github.com/Dhruv-patel0506/CrestFall" },
+      { label: "GitHub repo", href: "https://github.com/Dhruv-patel0506/CrestFall" },
     ],
   },
   {
@@ -106,7 +111,10 @@ export const projects: Project[] = [
     blurb: "Pulls NHTSA vehicle data through its public API and normalizes it for reliability scoring and analysis.",
     facts: ["NHTSA public API", "Data normalization", "Reliability scoring"],
     tags: ["Python", "REST API", "Data processing"],
-    links: [{ label: "Visit live project", href: "https://git-car-reliability-analyzer-live.vercel.app/" }],
+    links: [
+      { label: "Visit live project", href: "https://git-car-reliability-analyzer-live.vercel.app/" },
+      { label: "GitHub repo", href: "https://github.com/Dhruv-patel0506/git-project1-live" },
+    ],
   },
   {
     id: "seccdc",
@@ -117,7 +125,7 @@ export const projects: Project[] = [
     blurb: "Kept critical services running against a live red team: hardening, monitoring, incident reports.",
     facts: ["6-person blue team", "38 competing teams"],
     tags: ["Incident response", "Linux", "Hardening"],
-    links: [],
+    links: [{ label: "GitHub repo", href: "https://github.com/Dhruv-patel0506/ccdc-utc" }],
   },
 ];
 
@@ -153,3 +161,28 @@ export const terminalExtra: Record<string, string[]> = {
   "sudo make coffee": ["permission granted. ☕ brewing…"],
   "ping ai": ["64 bytes from ai: model=thinking time=0.2ms"],
 };
+
+/* Hand-drawn organ pipelines from the Hojaiga blueprint (diagrams/): each shows the
+   new organ before it is wired, after it is wired, and the whole system so far. */
+export const pipelines = [
+  { n: "01", name: "Brain → Central Nervous System" },
+  { n: "02", name: "Memory" },
+  { n: "03", name: "Knowledge" },
+  { n: "04", name: "Controllers" },
+  { n: "05", name: "Automation" },
+  { n: "06", name: "Security" },
+  { n: "07", name: "Learning" },
+  { n: "08", name: "Infrastructure" },
+  { n: "09", name: "Agents" },
+  { n: "10", name: "Interface" },
+  { n: "11", name: "Integration" },
+  { n: "12", name: "Interface layer" },
+  { n: "13", name: "LLM runtime" },
+  { n: "14", name: "External connectors" },
+  { n: "15", name: "Audit system" },
+  { n: "16", name: "Backup manager" },
+  { n: "17", name: "Capability registry" },
+  { n: "18", name: "Chrome CDP runtime" },
+  { n: "19", name: "Configuration manager" },
+  { n: "20", name: "Configuration schema" },
+];

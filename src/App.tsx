@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
+import "./extra.css";
 import AskBar from "./AskBar";
 import BrainField from "./BrainField";
 import Loader from "./Loader";
 import PacketReveal from "./PacketReveal";
+import ReportView from "./ReportView";
+import Workflow from "./Workflow";
 import { credentials, journey, links, projects, skills, stats, type Project } from "./data";
 
-const SECTIONS = ["about", "work", "skills", "security", "journey", "contact"];
+const SECTIONS = ["about", "work", "workflow", "skills", "security", "journey", "contact"];
 const FORCE_MOTION = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("motion");
 
 function usePrefersReducedMotion() {
@@ -67,43 +70,29 @@ function Print({ kind }: { kind: Project["art"] }) {
   );
 }
 
-/* Placeholder figure: no face, to be replaced with the real photo. */
-function Figure() {
+/* Dhruv, seated behind the AI search bar (photo cut-out, suit recoloured). */
+function Figure({ speaking }: { speaking: boolean }) {
   return (
-    <figure className="me" aria-label="Portrait placeholder">
-      <svg viewBox="0 0 400 600" className="me-svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="sweater" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#3a332e" />
-            <stop offset="0.55" stopColor="#221d1a" />
-            <stop offset="1" stopColor="#141110" />
-          </linearGradient>
-          <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#8a6a55" />
-            <stop offset="1" stopColor="#5d4436" />
-          </linearGradient>
-          <radialGradient id="rim" cx="0.2" cy="0.3" r="0.9">
-            <stop offset="0" stopColor="#fff3e0" stopOpacity="0.22" />
-            <stop offset="1" stopColor="#fff3e0" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        {/* neck + head (no face) */}
-        <path d="M178 150h44v46c0 10-10 18-22 18s-22-8-22-18Z" fill="url(#skin)" />
-        <ellipse cx="200" cy="104" rx="56" ry="66" fill="url(#skin)" />
-        <path d="M144 96c2-44 30-66 58-66 32 0 56 22 56 62-8-18-26-30-56-30-30 0-48 14-58 34Z" fill="#1d1714" />
-        {/* body */}
-        <path
-          d="M200 196c-40 0-78 10-104 30-22 18-32 52-38 96l-18 150c-2 18 10 30 28 30h264c18 0 30-12 28-30l-18-150c-6-44-16-78-38-96-26-20-64-30-104-30Z"
-          fill="url(#sweater)"
-        />
-        <path d="M168 200c8 14 20 22 32 22s24-8 32-22" fill="none" stroke="#2f2925" strokeWidth="6" />
-        <path
-          d="M200 196c-40 0-78 10-104 30-22 18-32 52-38 96l-18 150c-2 18 10 30 28 30h264c18 0 30-12 28-30l-18-150c-6-44-16-78-38-96-26-20-64-30-104-30Z"
-          fill="url(#rim)"
-        />
-      </svg>
-      <figcaption className="me-tag">your photo goes here</figcaption>
+    <figure className={`me ${speaking ? "is-speaking" : ""}`}>
+      <span className="me-halo" aria-hidden="true" />
+      <img src="/me.webp" alt="Dhruv Patel" width={760} height={609} />
+      <span className="me-wave" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
     </figure>
+  );
+}
+
+function ProjectLink({ href, label }: { href: string; label: string }) {
+  const internal = href.startsWith("#");
+  return (
+    <a href={href} {...(internal ? {} : { target: "_blank", rel: "noreferrer" })}>
+      {label} {internal ? "→" : "↗"}
+    </a>
   );
 }
 
@@ -114,6 +103,21 @@ export default function App() {
   const [booting, setBooting] = useState(() => !systemReduced);
   const [arrived, setArrived] = useState<string[]>([]);
   const [cyber, setCyber] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [route, setRoute] = useState(() => (typeof window !== "undefined" ? window.location.hash : ""));
+
+  useEffect(() => {
+    const on = () => setRoute(window.location.hash);
+    window.addEventListener("hashchange", on);
+    return () => window.removeEventListener("hashchange", on);
+  }, []);
+  const reportOpen = route === "#/report";
+  useEffect(() => {
+    if (reportOpen) setBooting(false);
+  }, [reportOpen]);
+  const closeReport = useCallback(() => {
+    window.location.hash = "#work";
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("reduce-motion", reduced);
@@ -137,7 +141,8 @@ export default function App() {
 
   return (
     <>
-      {booting && <Loader onDone={() => setBooting(false)} />}
+      {booting && !reportOpen && <Loader onDone={() => setBooting(false)} />}
+      {reportOpen && <ReportView reduced={reduced} onClose={closeReport} />}
       <BrainField reduced={reduced} brainAnchor=".brain-anchor" shieldAnchor=".shield-anchor" onCyber={setCyber} />
       <div className="grain" aria-hidden="true" />
 
@@ -149,11 +154,16 @@ export default function App() {
           </a>
           <nav className="nav-links" aria-label="Main navigation">
             <a href="#work">Work</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#/report">Report</a>
             <a href="#skills">Toolkit</a>
             <a href="#security">Security</a>
             <a href="#journey">Journey</a>
             <a href="#contact">Contact</a>
           </nav>
+          <a className="nav-in" href={links.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn profile">
+            in
+          </a>
           <span className="nav-status">
             <span className="nav-led" /> {cyber ? "secure mode" : "ai mode"} · rx {arrived.length}/{SECTIONS.length}
           </span>
@@ -184,9 +194,9 @@ export default function App() {
           </div>
 
           <div className="brain-anchor" aria-hidden="true" />
-          <Figure />
+          <Figure speaking={speaking} />
           <div className="hero-ask">
-            <AskBar />
+            <AskBar onSpeaking={setSpeaking} />
           </div>
 
           <div className="hero-foot shell">
@@ -199,7 +209,10 @@ export default function App() {
                 See the work ↓
               </a>
               <a className="btn btn-light" href={links.resume} download="Dhruv-Patel-Resume.pdf">
-                Résumé ↗
+                Résumé ↓
+              </a>
+              <a className="btn btn-light" href={links.linkedin} target="_blank" rel="noreferrer">
+                LinkedIn ↗
               </a>
             </div>
           </div>
@@ -262,9 +275,7 @@ export default function App() {
                 </div>
                 <div className="links">
                   {feature.links.map((l) => (
-                    <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                      {l.label} ↗
-                    </a>
+                    <ProjectLink key={l.href} href={l.href} label={l.label} />
                   ))}
                 </div>
               </div>
@@ -289,10 +300,10 @@ export default function App() {
                   {p.links.length > 0 && (
                     <div className="links">
                       {p.links.map((l) => (
-                        <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                          {l.label} ↗
-                        </a>
+                        <ProjectLink key={l.href} href={l.href} label={l.label} />
                       ))}
+                      {p.id === "dsconquest" && links.dsqInstagram && <ProjectLink href={links.dsqInstagram} label="Instagram" />}
+                      {p.id === "dsconquest" && links.dsqLinkedIn && <ProjectLink href={links.dsqLinkedIn} label="LinkedIn page" />}
                     </div>
                   )}
                 </article>
@@ -301,11 +312,16 @@ export default function App() {
           </div>
         </PacketReveal>
 
+        {/* ---------------- WORKFLOW (hand-drawn organ pipelines) ---------------- */}
+        <PacketReveal id="workflow" label="workflow" reduced={reduced} armed={!booting} onArrive={onArrive}>
+          <Workflow reduced={reduced} />
+        </PacketReveal>
+
         {/* ---------------- SKILLS ---------------- */}
         <PacketReveal id="skills" label="toolkit" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
-              <p className="kicker">03 — toolkit</p>
+              <p className="kicker">04 — toolkit</p>
               <h2 className="display">
                 The <span className="script-inline">model weights</span>
               </h2>
@@ -332,7 +348,7 @@ export default function App() {
         <PacketReveal id="security" label="security" reduced={reduced} armed={!booting} onArrive={onArrive} className="security">
           <div className="shell sec-grid">
             <div>
-              <p className="kicker">04 — security mode</p>
+              <p className="kicker">05 — security mode</p>
               <h2 className="display">
                 Secure by <span className="script-inline">default</span>
               </h2>
@@ -371,7 +387,7 @@ export default function App() {
         <PacketReveal id="journey" label="journey" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
-              <p className="kicker">05 — journey</p>
+              <p className="kicker">06 — journey</p>
               <h2 className="display">
                 Every <span className="script-inline">hop</span> so far
               </h2>
@@ -394,7 +410,7 @@ export default function App() {
         {/* ---------------- CONTACT ---------------- */}
         <PacketReveal id="contact" label="contact" reduced={reduced} armed={!booting} onArrive={onArrive}>
           <div className="shell contact">
-            <p className="kicker">06 — contact</p>
+            <p className="kicker">07 — contact</p>
             <h2 className="mega mega--contact">Let&apos;s talk</h2>
             <p className="script script--center">open a connection</p>
             <div className="contact-links">

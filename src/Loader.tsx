@@ -6,10 +6,12 @@ import { useEffect, useRef, useState } from "react";
   other side, then the core opens and the portfolio appears.
 */
 
+export type BootLine = { t: number; text: string; tag: string };
+
 const INBOUND = ["SYN", "HDR", "ai.pkt", "0x3F", "rag", "TLS", "llm", "0xA1", "ACK", "ui.pkt"];
 const OUTBOUND = ["about", "skills", "work", "journey", "contact"];
 
-const LOG = [
+const LOG: BootLine[] = [
   { t: 150, text: "connecting to dhruv.portfolio:443", tag: "" },
   { t: 520, text: "TLS 1.3 handshake", tag: "ok" },
   { t: 900, text: "inbound stream: 24 packets", tag: "" },
@@ -20,7 +22,19 @@ const LOG = [
 
 const TOTAL_MS = 2900;
 
-export default function Loader({ onDone }: { onDone: () => void }) {
+export default function Loader({
+  onDone,
+  log = LOG,
+  inbound = INBOUND,
+  outbound = OUTBOUND,
+  prompt = "./boot --ai",
+}: {
+  onDone: () => void;
+  log?: BootLine[];
+  inbound?: string[];
+  outbound?: string[];
+  prompt?: string;
+}) {
   const [shown, setShown] = useState(0);
   const [pct, setPct] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -34,7 +48,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
   };
 
   useEffect(() => {
-    const timers = LOG.map((line, i) => window.setTimeout(() => setShown(i + 1), line.t));
+    const timers = log.map((line, i) => window.setTimeout(() => setShown(i + 1), line.t));
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
@@ -62,7 +76,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
 
       <div className="boot-stage" aria-hidden="true">
         <div className="boot-cable boot-cable--in">
-          {INBOUND.map((label, i) => (
+          {inbound.map((label, i) => (
             <span className="boot-packet" style={{ animationDelay: `${i * 0.21}s` }} key={label + i}>
               {label}
             </span>
@@ -101,7 +115,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
         </div>
 
         <div className="boot-cable boot-cable--out">
-          {OUTBOUND.map((label, i) => (
+          {outbound.map((label, i) => (
             <span className="boot-packet boot-packet--page" style={{ animationDelay: `${1.6 + i * 0.22}s` }} key={label}>
               {label}
             </span>
@@ -111,13 +125,13 @@ export default function Loader({ onDone }: { onDone: () => void }) {
 
       <div className="boot-console">
         <div className="boot-console-top">
-          <span>dhruv@portfolio:~$ ./boot --ai</span>
+          <span>dhruv@portfolio:~$ {prompt}</span>
           <button type="button" className="boot-skip" onClick={finish}>
             skip ›
           </button>
         </div>
         <ol>
-          {LOG.slice(0, shown).map((line) => (
+          {log.slice(0, shown).map((line) => (
             <li key={line.text}>
               <span className="boot-arrow">›</span> {line.text}
               {line.tag && <span className={`boot-tag boot-tag--${line.tag === "blocked" ? "bad" : "ok"}`}>{line.tag}</span>}

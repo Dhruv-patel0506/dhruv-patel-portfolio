@@ -1,126 +1,216 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { links } from "./data";
 
 /*
-  The search bar the figure holds (like the reference photo). It is a small
-  scripted assistant: it matches keywords and answers from the portfolio
-  content. No API key and no data leaves the page.
+  The search bar Dhruv is holding. A small scripted assistant (no API key, nothing
+  leaves the page) that can TALK (speech synthesis) and LISTEN (speech recognition,
+  where the browser supports it). It greets visitors, answers by keyword, and links
+  to the right place on the site.
 */
 
-const HINTS = ["what did Dhruv build?", "is he into AI or security?", "how do I contact him?", "where's the résumé?"];
+type Answer = { text: string; href?: string; cta?: string };
 
-const ANSWERS: { keys: string[]; text: string; href?: string; cta?: string }[] = [
+const GREETING: Answer = {
+  text: "Hi, I'm Dhruv's AI. Ask me about his projects, his AI work, his security background, or how to reach him. You can type, or tap the mic and talk.",
+};
+
+const RULES: { keys: string[]; a: Answer }[] = [
   {
-    keys: ["build", "built", "project", "work", "made", "ship"],
-    text: "Three products in 2026: Hojaiga (a desktop AI agent), DS ConQuest (a data science academy that runs Python in the browser) and Crestfall (a forecasting web app on AWS).",
-    href: "#work",
-    cta: "See the work",
+    keys: ["hojaiga", "agent", "report", "desktop"],
+    a: { text: "Hojaiga is the Windows AI agent Dhruv built: it learns any app, works in a hidden window, and proves the result. The full research report is right here on the site.", href: "#/report", cta: "Open the report" },
   },
   {
-    keys: ["ai", "llm", "agent", "rag", "model", "machine"],
-    text: "AI is the main focus: agents that operate real apps, LLM apps with retrieval, QLoRA fine-tuning and honest evaluation.",
-    href: "#skills",
-    cta: "See the toolkit",
+    keys: ["ds conquest", "conquest", "academy", "course", "learn"],
+    a: { text: "DS ConQuest is his data science academy: 49 modules and 171 lessons, with real Python running in your browser, even offline.", href: "https://ds-quest-silk.vercel.app/", cta: "Visit DS ConQuest" },
   },
   {
-    keys: ["security", "cyber", "secure", "hack", "blue"],
-    text: "Security is the foundation: a B.S. with a cybersecurity concentration, a SECCDC blue team, and safe defaults in everything he builds.",
-    href: "#security",
-    cta: "Security side",
+    keys: ["crestfall", "forecast", "stock", "company"],
+    a: { text: "Crestfall forecasts a company's growth phase, peak year and crash risk from its own history. FastAPI on AWS, React on Vercel.", href: "https://crestfall-frontend.vercel.app/", cta: "Visit Crestfall" },
   },
   {
-    keys: ["contact", "email", "hire", "reach", "talk", "linkedin"],
-    text: "Email dhruv15.dapatel@gmail.com or connect on LinkedIn. He's open to AI and automation roles.",
-    href: "#contact",
-    cta: "Contact",
+    keys: ["workflow", "organ", "diagram", "architecture", "drawing", "design"],
+    a: { text: "He designed Hojaiga as organs wired together, like a brain and a nervous system. Scroll to the workflow to see every drawing.", href: "#workflow", cta: "See the workflow" },
+  },
+  {
+    keys: ["build", "built", "project", "work", "made", "ship", "portfolio"],
+    a: { text: "Three products in 2026: Hojaiga, a desktop AI agent; DS ConQuest, a data science academy; and Crestfall, a forecasting web app.", href: "#work", cta: "See the work" },
+  },
+  {
+    keys: ["ai", "llm", "rag", "model", "machine", "skill", "stack", "python"],
+    a: { text: "AI is his main focus: agents that operate real apps, LLM apps with retrieval, QLoRA fine-tuning and honest evaluation, on a Python, FastAPI and React stack.", href: "#skills", cta: "See the toolkit" },
+  },
+  {
+    keys: ["security", "cyber", "secure", "hack", "blue team", "seccdc"],
+    a: { text: "Security is his foundation: a cybersecurity degree, a SECCDC blue team, and safe defaults in everything he builds.", href: "#security", cta: "Security side" },
   },
   {
     keys: ["resume", "résumé", "cv"],
-    text: "Here's the one-page résumé.",
-    href: "/Dhruv-Patel-Resume.pdf",
-    cta: "Download résumé",
+    a: { text: "Here's his one-page résumé.", href: links.resume, cta: "Download résumé" },
+  },
+  {
+    keys: ["linkedin", "contact", "email", "hire", "reach", "talk", "connect", "job"],
+    a: { text: "He's open to AI and automation roles. Connect on LinkedIn or email dhruv15.dapatel@gmail.com.", href: links.linkedin, cta: "Open LinkedIn" },
+  },
+  {
+    keys: ["hello", "hi", "hey", "who"],
+    a: { text: "Hello! I'm the AI on Dhruv's portfolio. He's an AI engineer with a cybersecurity background. What would you like to know?" },
   },
 ];
 
-export default function AskBar() {
+const CHIPS = ["What did he build?", "Hojaiga report", "AI skills", "Security", "Hire him"];
+
+type SR = { lang: string; interimResults: boolean; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null; start: () => void; stop: () => void };
+
+export default function AskBar({ onSpeaking }: { onSpeaking?: (on: boolean) => void }) {
   const [q, setQ] = useState("");
-  const [hint, setHint] = useState(0);
-  const [typed, setTyped] = useState("");
-  const [answer, setAnswer] = useState<(typeof ANSWERS)[number] | null>(null);
-  const [miss, setMiss] = useState(false);
+  const [answer, setAnswer] = useState<Answer>(GREETING);
+  const [shown, setShown] = useState("");
+  const [voice, setVoice] = useState(false);
+  const [listening, setListening] = useState(false);
+  const recRef = useRef<SR | null>(null);
 
-  // typewriter placeholder
+  const canSpeak = typeof window !== "undefined" && "speechSynthesis" in window;
+  const SRCtor =
+    typeof window !== "undefined"
+      ? ((window as unknown as { SpeechRecognition?: new () => SR; webkitSpeechRecognition?: new () => SR }).SpeechRecognition ??
+        (window as unknown as { webkitSpeechRecognition?: new () => SR }).webkitSpeechRecognition)
+      : undefined;
+
+  // type the answer out like a chat reply
   useEffect(() => {
-    if (q) return;
-    const target = HINTS[hint];
     let i = 0;
-    let back = false;
+    setShown("");
     const id = window.setInterval(() => {
-      if (!back) {
-        i += 1;
-        setTyped(target.slice(0, i));
-        if (i >= target.length) back = true;
-      } else {
-        i -= 1;
-        if (i < -18) {
-          window.clearInterval(id);
-          setHint((h) => (h + 1) % HINTS.length);
-          return;
-        }
-        if (i >= 0) setTyped(target.slice(0, i));
-      }
-    }, 70);
+      i += 2;
+      setShown(answer.text.slice(0, i));
+      if (i >= answer.text.length) window.clearInterval(id);
+    }, 16);
     return () => window.clearInterval(id);
-  }, [hint, q]);
+  }, [answer]);
 
-  const ask = (text: string) => {
-    const t = text.toLowerCase();
-    const hit = ANSWERS.find((a) => a.keys.some((k) => t.includes(k)));
-    setAnswer(hit ?? null);
-    setMiss(!hit);
+  const speak = (text: string) => {
+    if (!canSpeak) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1.02;
+    u.pitch = 1;
+    const v = window.speechSynthesis.getVoices().find((x) => /en-(US|GB|IN)/.test(x.lang));
+    if (v) u.voice = v;
+    u.onstart = () => onSpeaking?.(true);
+    u.onend = () => onSpeaking?.(false);
+    u.onerror = () => onSpeaking?.(false);
+    window.speechSynthesis.speak(u);
+  };
+
+  const respond = (text: string) => {
+    const t = ` ${text.toLowerCase()} `;
+    const hit = RULES.find((r) => r.keys.some((k) => (k.length <= 3 ? new RegExp(`\\b${k}\\b`).test(t) : t.includes(k))));
+    const a = hit?.a ?? {
+      text: "I'm a small scripted helper, so I only know this portfolio. Try asking about Hojaiga, DS ConQuest, Crestfall, his AI skills, security, the résumé, or how to contact him.",
+    };
+    setAnswer(a);
+    if (voice) speak(a.text);
   };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    ask(q || HINTS[hint]);
+    if (!q.trim()) return;
+    respond(q);
+    setQ("");
   };
 
+  const toggleVoice = () => {
+    const next = !voice;
+    setVoice(next);
+    if (next) speak(answer.text);
+    else if (canSpeak) {
+      window.speechSynthesis.cancel();
+      onSpeaking?.(false);
+    }
+  };
+
+  const listen = () => {
+    if (!SRCtor) {
+      setAnswer({ text: "Your browser doesn't support voice input. Try Chrome or Edge, or just type your question." });
+      return;
+    }
+    if (listening) {
+      recRef.current?.stop();
+      return;
+    }
+    const rec = new SRCtor();
+    rec.lang = "en-US";
+    rec.interimResults = false;
+    rec.onresult = (e) => {
+      const said = e.results[0][0].transcript;
+      setQ(said);
+      respond(said);
+      setQ("");
+    };
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    recRef.current = rec;
+    setListening(true);
+    if (!voice) setVoice(true); // talking to it means you want it to talk back
+    rec.start();
+  };
+
+  useEffect(() => () => {
+    if (canSpeak) window.speechSynthesis.cancel();
+  }, [canSpeak]);
+
+  const external = answer.href?.startsWith("http");
   return (
     <div className="ask">
-      {(answer || miss) && (
-        <div className="ask-bubble" role="status">
+      <div className="ask-bubble" role="status" aria-live="polite">
+        <div className="ask-head">
           <span className="ask-who">dhruv.ai</span>
-          {answer ? (
-            <>
-              <p>{answer.text}</p>
-              {answer.href && (
-                <a href={answer.href} {...(answer.href.endsWith(".pdf") ? { download: "Dhruv-Patel-Resume.pdf" } : {})}>
-                  {answer.cta} →
-                </a>
-              )}
-            </>
-          ) : (
-            <p>I&apos;m a small scripted helper. Try asking about his projects, AI, security, the résumé or how to contact him.</p>
-          )}
-          <button type="button" className="ask-close" aria-label="Close answer" onClick={() => { setAnswer(null); setMiss(false); }}>
-            ×
+          <button type="button" className={`ask-voice ${voice ? "is-on" : ""}`} onClick={toggleVoice} disabled={!canSpeak} aria-pressed={voice}>
+            {voice ? "🔊 voice on" : "🔈 hear me"}
           </button>
         </div>
-      )}
+        <p>
+          {shown}
+          {shown.length < answer.text.length && <span className="ask-caret" />}
+        </p>
+        {answer.href && shown.length >= answer.text.length && (
+          <a
+            href={answer.href}
+            {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+            {...(answer.href.endsWith(".pdf") ? { download: "Dhruv-Patel-Resume.pdf" } : {})}
+          >
+            {answer.cta} →
+          </a>
+        )}
+        <div className="ask-chips">
+          {CHIPS.map((c) => (
+            <button type="button" key={c} onClick={() => respond(c)}>
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
       <form className="ask-bar" onSubmit={submit}>
         <svg className="ask-icon" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="10.5" cy="10.5" r="6.5" />
           <path d="m15.5 15.5 5 5" />
         </svg>
         <label className="sr-only" htmlFor="ask-input">
-          Ask about Dhruv
+          Ask Dhruv's AI a question
         </label>
         <input
           id="ask-input"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={`Ask my AI: ${typed}`}
+          placeholder={listening ? "listening…" : "ASK MY AI ANYTHING"}
           autoComplete="off"
         />
+        <button type="button" className={`ask-mic ${listening ? "is-on" : ""}`} onClick={listen} aria-label={listening ? "Stop listening" : "Ask with your voice"}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="3" width="6" height="11" rx="3" />
+            <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+          </svg>
+        </button>
         <button type="submit" className="ask-go">
           Ask
         </button>
