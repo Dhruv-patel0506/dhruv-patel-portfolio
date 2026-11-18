@@ -14,13 +14,13 @@ const storyTabs = [
   },
   {
     id: "automation",
-    label: "In progress",
+    label: "What I built",
     number: "02",
-    kicker: "ON THE WORKBENCH",
-    title: "Making the repetitive feel effortless.",
-    copy: "Hojaiga.com is my AI-powered automation project in development: an ongoing experiment in making everyday digital workflows smarter.",
-    tags: ["Hojaiga.com", "AI-powered", "Under development"],
-    status: "BUILD / HOJAIGA.COM",
+    kicker: "SHIPPED IN 2026",
+    title: "Three products, built end to end.",
+    copy: "Hojaiga, a desktop AI agent released as open research; DS ConQuest, a data science academy that runs real Python in the browser; and Crestfall, a forecasting web app on AWS.",
+    tags: ["Hojaiga", "DS ConQuest", "Crestfall"],
+    status: "BUILD / 320K+ LINES OF CODE",
   },
   {
     id: "security",
@@ -37,11 +37,11 @@ const storyTabs = [
 const skills = [
   {
     title: "AI & automation",
-    items: ["AI-powered workflows", "Workflow automation", "Python scripting", "API integration"],
+    items: ["LLM APIs (Claude, Gemini, Groq)", "RAG, LangChain, CrewAI", "QLoRA fine-tuning & evaluation", "Windows UI Automation"],
   },
   {
     title: "Product & software",
-    items: ["Turning ideas into tools", "Backend APIs", "Data processing", "Project coordination"],
+    items: ["Python, FastAPI, Django", "React, TypeScript, Node.js", "Pyodide (Python in the browser)", "AWS EC2, Docker, Vercel"],
   },
   {
     title: "Cybersecurity foundation",
@@ -117,6 +117,30 @@ const experience = [
     dates: "May 2026",
     description:
       "Data Science education listed on my profile and résumé.",
+  },
+  {
+    kind: "project",
+    role: "AI Automation Engineer · Hojaiga",
+    organization: "Independent project · open-source research release",
+    dates: "Aug 2026 — Nov 2026",
+    description:
+      "Built a Windows AI agent (230k+ lines of Python, 60+ modules, 29 test suites) that learns desktop apps from their files and screens, works in hidden windows, and proves each result before reporting done.",
+  },
+  {
+    kind: "project",
+    role: "Full-Stack Developer · Crestfall",
+    organization: "Hackathon project · Vercel + AWS EC2",
+    dates: "Oct 2026",
+    description:
+      "Built a FastAPI forecasting engine for 49 companies (2 GB of history, walk-forward validation) and a React front end, deployed on Vercel with a Dockerized backend on AWS EC2.",
+  },
+  {
+    kind: "project",
+    role: "Founder & Full-Stack Engineer · DS ConQuest",
+    organization: "Data science learning platform",
+    dates: "Oct 2026 — Present",
+    description:
+      "Launched a browser academy with 49 modules, 171 lessons and 700+ graded exercises that run real Python in the browser, offline-first, with 1,500+ automated checks.",
   },
 ];
 
@@ -310,11 +334,11 @@ function App() {
                   <span aria-hidden="true">▣</span> Open my story
                 </button>
               )}
-              <div className="stage-project-note">
+              <a className="stage-project-note" href="#work">
                 <span className="project-note-spark">✳</span>
-                <span><strong>On the workbench</strong><small>Hojaiga.com · AI automation</small></span>
+                <span><strong>Shipped in 2026</strong><small>Hojaiga · DS ConQuest · Crestfall</small></span>
                 <span className="project-note-arrow" aria-hidden="true">↗</span>
-              </div>
+              </a>
             </div>
           </div>
           <div className="hero-bottom page-shell">
@@ -337,15 +361,16 @@ function App() {
                 simplifying repetitive work, and learning by building.
               </p>
               <p>
-                I&apos;m currently developing Hojaiga.com, an AI-powered
-                automation project. My cybersecurity background brings a
-                second lens to that work: build with care, think about trust,
-                and understand the systems underneath.
+                In 2026 I built three products end to end: Hojaiga, a desktop
+                AI agent; DS ConQuest, a data science academy in the browser;
+                and Crestfall, a forecasting web app. My cybersecurity
+                background brings a second lens to that work: build with care,
+                think about trust, and understand the systems underneath.
               </p>
               <div className="fact-row">
-                <div><strong>3.52</strong><span>GPA / 4.0</span></div>
+                <div><strong>3</strong><span>Products shipped</span></div>
+                <div><strong>320k+</strong><span>Lines of code</span></div>
                 <div><strong>500+</strong><span>People trained</span></div>
-                <div><strong>UTC</strong><span>Computer Science</span></div>
               </div>
             </div>
           </div>
@@ -418,19 +443,108 @@ function App() {
                 <h2>Projects & initiatives</h2>
               </div>
               <p className="section-aside">
-                A mix of shipped work, team experience, and a project in
-                progress.
+                Three products I built in 2026, plus earlier project and
+                team work. Every live link opens the real thing.
               </p>
             </div>
             <div className="projects-grid">
               <article className="project-card project-featured">
-                <div className="project-meta"><span>01 / LIVE PROJECT</span><span>DATA · API</span></div>
+                <div className="project-meta"><span>01 / OPEN-SOURCE RELEASE</span><span>AI · AUTOMATION</span></div>
                 <div className="project-art car-art" aria-hidden="true">
                   <div className="data-line data-line-one" />
                   <div className="data-line data-line-two" />
                   <div className="data-node node-one" />
                   <div className="data-node node-two" />
-                  <div className="car-glyph">CR<span>↗</span></div>
+                  <div className="car-glyph">HJ<span>↗</span></div>
+                  <span className="art-caption">LEARN THE APP / ACT / PROVE</span>
+                </div>
+                <div className="project-body">
+                  <p className="eyebrow">DESKTOP AI AGENT · AUG–NOV 2026</p>
+                  <h3>Hojaiga</h3>
+                  <p>
+                    A Windows assistant that learns any app from its program
+                    files and live screen, does the task in a hidden window,
+                    and only reports done when it can prove the result.
+                    230k+ lines of Python, 60+ modules and 29 test suites; it
+                    mapped PowerPoint&apos;s 360 controls and 980 menu items in
+                    5 minutes. The write-up covers what worked, what failed
+                    (fine-tuned 4B model: 39% vs 53% for the base model on 630
+                    held-out items) and how it ended.
+                  </p>
+                  <div className="tag-list"><span>Python</span><span>UI Automation</span><span>QLoRA</span><span>LLM APIs</span><span>RAG</span></div>
+                  <div className="link-row">
+                    <a className="text-link" href="https://github.com/Dhruv-patel0506/Hojaiga.com" target="_blank" rel="noreferrer">
+                      View code <span aria-hidden="true">↗</span>
+                    </a>
+                    <a className="text-link" href="https://github.com/Dhruv-patel0506/Hojaiga.com/blob/main/reports/hojaiga_closing/HOJAIGA_REPORT.pdf" target="_blank" rel="noreferrer">
+                      Read the report <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <article className="project-card">
+                <div className="project-meta"><span>02 / LIVE PRODUCT</span><span>EDTECH · PYTHON</span></div>
+                <div className="project-art academy-art" aria-hidden="true">
+                  <div className="academy-code"><i /><i /><i /><i /></div>
+                  <div className="academy-core">DS</div>
+                  <span className="art-caption">DS CONQUEST / 171 LESSONS</span>
+                </div>
+                <div className="project-body">
+                  <p className="eyebrow">FOUNDER · FULL-STACK</p>
+                  <h3>DS ConQuest</h3>
+                  <p>
+                    A data science academy that runs real Python in the
+                    browser: 49 modules, 171 lessons, 700+ graded exercises,
+                    offline-first, with 1,500+ automated checks.
+                  </p>
+                  <div className="tag-list"><span>JavaScript</span><span>Pyodide</span><span>Django</span><span>Redis</span></div>
+                  <div className="link-row">
+                    <a className="text-link" href="https://ds-quest-silk.vercel.app/" target="_blank" rel="noreferrer">
+                      Visit live site <span aria-hidden="true">↗</span>
+                    </a>
+                    <a className="text-link" href="https://github.com/Dhruv-patel0506/DS-Quest-TOUR" target="_blank" rel="noreferrer">
+                      Showcase code <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <article className="project-card">
+                <div className="project-meta"><span>03 / LIVE PRODUCT</span><span>DATA · FORECASTING</span></div>
+                <div className="project-art forecast-art" aria-hidden="true">
+                  <svg className="forecast-line" viewBox="0 0 200 80" preserveAspectRatio="none">
+                    <polyline points="0,70 30,58 55,62 85,38 110,22 130,18 150,30 175,52 200,66" />
+                  </svg>
+                  <span className="forecast-peak">PEAK</span>
+                  <span className="art-caption">CRESTFALL / RISE AND FALL</span>
+                </div>
+                <div className="project-body">
+                  <p className="eyebrow">HACKATHON · FULL-STACK</p>
+                  <h3>Crestfall</h3>
+                  <p>
+                    Forecasts a company&apos;s growth phase, peak year and crash
+                    risk for 49 companies from 2 GB of dated history. FastAPI
+                    on AWS EC2 with Docker, React on Vercel.
+                  </p>
+                  <div className="tag-list"><span>FastAPI</span><span>React</span><span>AWS EC2</span><span>Docker</span></div>
+                  <div className="link-row">
+                    <a className="text-link" href="https://crestfall-frontend.vercel.app/" target="_blank" rel="noreferrer">
+                      Visit live site <span aria-hidden="true">↗</span>
+                    </a>
+                    <a className="text-link" href="https://github.com/Dhruv-patel0506/CrestFall" target="_blank" rel="noreferrer">
+                      View code <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <article className="project-card">
+                <div className="project-meta"><span>04 / LIVE PROJECT</span><span>DATA · API</span></div>
+                <div className="project-art automation-art" aria-hidden="true">
+                  <div className="automation-orbit orbit-one" />
+                  <div className="automation-orbit orbit-two" />
+                  <div className="automation-core">CR</div>
                   <span className="art-caption">VEHICLE RELIABILITY / DATA</span>
                 </div>
                 <div className="project-body">
@@ -441,39 +555,16 @@ function App() {
                     records for reliability scoring and analysis.
                   </p>
                   <div className="tag-list"><span>Python</span><span>NHTSA API</span><span>Data processing</span></div>
-                  <a
-                    className="text-link"
-                    href="https://git-car-reliability-analyzer-live.vercel.app/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Visit live project <span aria-hidden="true">↗</span>
-                  </a>
-                </div>
-              </article>
-
-              <article className="project-card">
-                <div className="project-meta"><span>02 / IN PROGRESS</span><span>AI · AUTOMATION</span></div>
-                <div className="project-art automation-art" aria-hidden="true">
-                  <div className="automation-orbit orbit-one" />
-                  <div className="automation-orbit orbit-two" />
-                  <div className="automation-core">AI</div>
-                  <span className="art-caption">HOJAIGA.COM / BUILDING</span>
-                </div>
-                <div className="project-body">
-                  <p className="eyebrow">PRIVATE BUILD</p>
-                  <h3>Hojaiga.com</h3>
-                  <p>
-                    An AI-powered automation project currently under
-                    development. The source repository is private.
-                  </p>
-                  <div className="tag-list"><span>AI</span><span>Automation</span><span>In development</span></div>
-                  <span className="text-link text-link-muted">Project in progress</span>
+                  <div className="link-row">
+                    <a className="text-link" href="https://git-car-reliability-analyzer-live.vercel.app/" target="_blank" rel="noreferrer">
+                      Visit live project <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
                 </div>
               </article>
 
               <article className="project-card competition-card">
-                <div className="project-meta"><span>03 / TEAM EXPERIENCE</span><span>BLUE TEAM</span></div>
+                <div className="project-meta"><span>05 / TEAM EXPERIENCE</span><span>BLUE TEAM</span></div>
                 <div className="project-art defense-art" aria-hidden="true">
                   <div className="defense-grid" />
                   <div className="defense-center"><span>SECCDC</span><strong>DEFEND</strong></div>
@@ -552,6 +643,7 @@ function App() {
               </a>
               <div className="contact-links">
                 <a href="https://www.linkedin.com/in/dhruv-d-patel0506/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+                <a href="https://github.com/Dhruv-patel0506" target="_blank" rel="noreferrer">GitHub ↗</a>
                 <a href="tel:+919274364241">+91 92743 64241</a>
               </div>
             </div>
