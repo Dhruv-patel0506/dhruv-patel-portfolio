@@ -20,8 +20,8 @@ const RULES: { keys: string[]; a: Answer }[] = [
     a: { text: "Hojaiga is the Windows AI agent Dhruv built: it learns any app, works in a hidden window, and proves the result. The full research report is right here on the site.", href: "#/report", cta: "Open the report" },
   },
   {
-    keys: ["ds conquest", "conquest", "academy", "course", "learn"],
-    a: { text: "DS ConQuest is his data science academy: 49 modules and 171 lessons, with real Python running in your browser, even offline.", href: "https://ds-quest-silk.vercel.app/", cta: "Visit DS ConQuest" },
+    keys: ["ds conquest", "conquest", "academy", "course", "learn", "instagram"],
+    a: { text: "DS ConQuest is his data science academy: 49 modules and 171 lessons, with real Python running in your browser, even offline. It's on Instagram as @ds.conquest and has a LinkedIn page too.", href: "https://ds-quest-silk.vercel.app/", cta: "Visit DS ConQuest" },
   },
   {
     keys: ["crestfall", "forecast", "stock", "company"],

@@ -7,8 +7,8 @@ export const links = {
   resume: "/Dhruv-Patel-Resume.pdf",
   hojaigaPost: "https://www.linkedin.com/feed/update/urn:li:share:7528661945844113408/",
   // DS ConQuest social pages: fill these in and the buttons appear automatically
-  dsqInstagram: "",
-  dsqLinkedIn: "",
+  dsqInstagram: "https://www.instagram.com/ds.conquest/",
+  dsqLinkedIn: "https://www.linkedin.com/company/ds-conquest/",
 };
 
 export const stats = [
