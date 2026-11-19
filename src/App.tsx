@@ -3,6 +3,7 @@ import "./App.css";
 import "./extra.css";
 import AskBar from "./AskBar";
 import BrainField from "./BrainField";
+import Cover from "./Cover";
 import Loader from "./Loader";
 import PacketReveal from "./PacketReveal";
 import ReportView from "./ReportView";
@@ -102,6 +103,24 @@ export default function App() {
   const [replay, setReplay] = useState(false);
   const reduced = systemReduced && !replay;
   const [booting, setBooting] = useState(() => !systemReduced);
+  const [entered, setEntered] = useState(() => {
+    if (typeof window === "undefined") return true;
+    if (new URLSearchParams(window.location.search).has("nocover")) return true;
+    if (window.location.hash && window.location.hash !== "#home") return true; // deep links skip the cover
+    try {
+      return sessionStorage.getItem("dp-entered") === "1";
+    } catch {
+      return false;
+    }
+  });
+  const enter = useCallback(() => {
+    try {
+      sessionStorage.setItem("dp-entered", "1");
+    } catch {
+      /* private mode: cover just shows again next visit */
+    }
+    setEntered(true);
+  }, []);
   const [arrived, setArrived] = useState<string[]>([]);
   const [cyber, setCyber] = useState(false);
   const [speaking, setSpeaking] = useState(false);
@@ -124,8 +143,8 @@ export default function App() {
     document.documentElement.classList.toggle("reduce-motion", reduced);
   }, [reduced]);
   useEffect(() => {
-    document.body.classList.toggle("is-booting", booting);
-  }, [booting]);
+    document.body.classList.toggle("is-booting", booting || !entered);
+  }, [booting, entered]);
   useEffect(() => {
     document.body.classList.toggle("theme-cyber", cyber);
   }, [cyber]);
@@ -142,7 +161,8 @@ export default function App() {
 
   return (
     <>
-      {booting && !reportOpen && <Loader onDone={() => setBooting(false)} />}
+      {!entered && !reportOpen && <Cover onEnter={enter} />}
+      {entered && booting && !reportOpen && <Loader onDone={() => setBooting(false)} />}
       {reportOpen && <ReportView reduced={reduced} onClose={closeReport} />}
       <BrainField reduced={reduced} brainAnchor=".brain-anchor" shieldAnchor=".shield-anchor" onCyber={setCyber} />
       <div className="grain" aria-hidden="true" />
@@ -222,7 +242,7 @@ export default function App() {
         </section>
 
         {/* ---------------- ABOUT ---------------- */}
-        <PacketReveal id="about" label="about" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="about" label="about" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <div className="shell about">
             <p className="kicker">01 — about</p>
             <h2 className="statement">
@@ -248,7 +268,7 @@ export default function App() {
         </PacketReveal>
 
         {/* ---------------- WORK ---------------- */}
-        <PacketReveal id="work" label="work" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="work" label="work" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
               <p className="kicker">02 — selected work</p>
@@ -317,17 +337,17 @@ export default function App() {
         </PacketReveal>
 
         {/* ---------------- WHITEBOARD (how I build with AI) ---------------- */}
-        <PacketReveal id="whiteboard" label="whiteboard" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="whiteboard" label="whiteboard" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <Whiteboard />
         </PacketReveal>
 
         {/* ---------------- WORKFLOW (hand-drawn organ pipelines) ---------------- */}
-        <PacketReveal id="workflow" label="workflow" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="workflow" label="workflow" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <Workflow reduced={reduced} />
         </PacketReveal>
 
         {/* ---------------- SKILLS ---------------- */}
-        <PacketReveal id="skills" label="toolkit" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="skills" label="toolkit" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
               <p className="kicker">05 — toolkit</p>
@@ -358,7 +378,7 @@ export default function App() {
         </PacketReveal>
 
         {/* ---------------- SECURITY (theme shift) ---------------- */}
-        <PacketReveal id="security" label="security" reduced={reduced} armed={!booting} onArrive={onArrive} className="security">
+        <PacketReveal id="security" label="security" reduced={reduced} armed={!booting && entered} onArrive={onArrive} className="security">
           <div className="shell sec-grid">
             <div>
               <p className="kicker">06 — security mode</p>
@@ -397,7 +417,7 @@ export default function App() {
         </PacketReveal>
 
         {/* ---------------- JOURNEY ---------------- */}
-        <PacketReveal id="journey" label="journey" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="journey" label="journey" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <div className="shell">
             <div className="head">
               <p className="kicker">07 — journey</p>
@@ -421,7 +441,7 @@ export default function App() {
         </PacketReveal>
 
         {/* ---------------- CONTACT ---------------- */}
-        <PacketReveal id="contact" label="contact" reduced={reduced} armed={!booting} onArrive={onArrive}>
+        <PacketReveal id="contact" label="contact" reduced={reduced} armed={!booting && entered} onArrive={onArrive}>
           <div className="shell contact">
             <p className="kicker">08 — contact</p>
             <h2 className="mega mega--contact">Let&apos;s talk</h2>
